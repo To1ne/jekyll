@@ -1,5 +1,6 @@
 module Jekyll
-
+  $shortcount = 0
+  
   class Post
     include Comparable
     include Convertible
@@ -150,6 +151,18 @@ module Jekyll
       File.join(self.dir, self.slug)
     end
 
+    # The short link tag for this post
+    # e.g. /q41sSf
+    #
+    # Returns <String>
+    def short
+      $shortcount = $shortcount + 1
+      if (!@shortnum) then
+        @shortnum = $shortcount
+      end
+      @shortnum
+    end
+
     # Calculate related posts.
     #
     # Returns [<Post>]
@@ -217,6 +230,7 @@ module Jekyll
         "url"        => self.url,
         "date"       => self.date,
         "id"         => self.id,
+        "short"      => self.short,
         "categories" => self.categories,
         "next"       => self.next,
         "previous"   => self.previous,
