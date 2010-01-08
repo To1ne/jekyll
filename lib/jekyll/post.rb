@@ -150,17 +150,33 @@ module Jekyll
     def id
       File.join(self.dir, self.slug)
     end
+    
+    # The unique number of the post
+    # e.g. 125
+    #
+    # Returns <Integer>
+    def num
+      @num ||= ($shortcount += 1)
+    end      
 
     # The short link tag for this post
     # e.g. /q41sSf
     #
     # Returns <String>
     def short
-      $shortcount = $shortcount + 1
-      if (!@shortnum) then
-        @shortnum = $shortcount
+      if !@short then
+        chars = ('a'..'z').to_a + ('A'..'Z').to_a + (0..9).to_a
+        s = chars.size
+        m = self.num
+        @short = ""
+        while m > 0 do
+          r = m % s
+          m = m / s
+          @short << (chars[r-1]).to_s
+        end
+      else
+        @short
       end
-      @shortnum
     end
 
     # Calculate related posts.
