@@ -1,6 +1,6 @@
 module Jekyll
   $shortcount = 0
-  
+
   class Post
     include Comparable
     include Convertible
@@ -164,7 +164,7 @@ module Jekyll
     #
     # Returns <String>
     def short
-      if !@short then
+      @short || begin
         chars = ('a'..'z').to_a + ('A'..'Z').to_a + (0..9).to_a
         s = chars.size
         m = self.num
@@ -172,10 +172,8 @@ module Jekyll
         while m > 0 do
           r = m % s
           m = m / s
-          @short << (chars[r-1]).to_s
+          @short = (chars[r-1]).to_s << @short
         end
-      else
-        @short
       end
     end
 
